@@ -1,19 +1,23 @@
 require 'atomic'
-require 'hitimes'
 
 require 'metriks/meter'
 require 'metriks/histogram'
 
 module Metriks
   class Timer
+    def self.interval_now
+      require 'hitimes'
+      Hitimes::Interval.now
+    end
+
     class Context
       def initialize(timer)
         @timer    = timer
-        @interval = Hitimes::Interval.now
+        @interval = Timer.interval_now
       end
 
       def restart
-        @interval = Hitimes::Interval.now
+        @interval = Timer.interval_now
       end
 
       def stop
